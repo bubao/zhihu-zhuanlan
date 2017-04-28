@@ -1,0 +1,16 @@
+{
+  "name": "oh-hard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js && node MD.js"
+  },
+  "author": "bubao",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "request": "^2.81.0",
+    "to-markdown": "^3.0.4"
+  }
+}
