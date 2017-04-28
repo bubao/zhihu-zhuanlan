@@ -8,13 +8,13 @@
 
 **获取**
 
-```sh
+```shell
 git clone https://github.com/bubao/GetZhiHuZhuanLan.git
 ```
 
 **安装**
 
-```sh
+```shell
 npm init
 ```
 
