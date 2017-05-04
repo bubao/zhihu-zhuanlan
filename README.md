@@ -15,7 +15,7 @@ git clone https://github.com/bubao/GetZhiHuZhuanLan.git
 **安装**
 
 ```shell
-npm init
+npm install
 ```
 
 **配置**
