@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js && node MD.js"
+    "start": "node src/index.js && node src/MD.js"
   },
   "author": "bubao",
   "license": "ISC",
   "dependencies": {
     "cheerio": "^0.22.0",
-    "request": "^2.81.0",
-    "to-markdown": "^3.0.4"
+    "h2m": "^0.5.2",
+    "lodash": "^4.17.4",
+    "request": "^2.81.0"
   }
 }

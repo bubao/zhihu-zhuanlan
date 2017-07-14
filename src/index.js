@@ -10,19 +10,31 @@ const url = `https://zhuanlan.zhihu.com/${zhihuId}`;
 
 // const urlp = `https://zhuanlan.zhihu.com/api/columns/${zhihuId}/posts?limit=20&amp;offset=0`;
 
-console.log('---------start----------------');
-fs.exists(dir, function(exists) {
+console.log(`-----🐛 ${zhihuId} start -----`);
+
+fs.exists('out', function(exists) {
 	if (exists)
-		console.log(dir + '文件夹存在');
+		console.log('😁 out文件夹存在');
 	else {
-		fs.mkdir(dir, function(err) {
+		fs.mkdir('out', function(err) {
 			if (err)
 				console.error(err);
-			console.log('创建' + dir + '文件夹成功');
+			console.log('☑ 创建 out 文件夹成功');
 		})
 	}
-
+	fs.exists(`out/${dir}`, function(exists) {
+		if (exists)
+			console.log(`⚓ out/${dir}` + ' 文件夹已经存在');
+		else {
+			fs.mkdir(`out/${dir}`, function(err) {
+				if (err)
+					console.error(err);
+				console.log('🤖 创建 out/' + dir + ' 文件夹成功');
+			})
+		}
+	});
 });
+
 server.download(url, function(data) {
 	if (data) {
 		//console.log(data);
@@ -51,7 +63,7 @@ function loopdown(postsCount) {
 				// console.log(res);
 				//console.log(body);
 			})
-			.pipe(fs.createWriteStream(`${dir}/${i}.json`))
-		console.log(`${dir}/${i}.json`)
+			.pipe(fs.createWriteStream(`out/${dir}/${i}.json`))
+		console.log(`📩 ${dir}/${i}.json`)
 	}
 }

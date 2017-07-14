@@ -1,24 +1,33 @@
 const fs = require('fs');
 const _ = require('lodash');
-const toMarkdown = require('to-markdown');
-
+//const toMarkdown = require('to-markdown');
+const h2m =require('h2m')
 const config = require('./config.js');
-const dir = `./${config.zhihuId}md`;
+const dir = `out/${config.zhihuId}md`;
 
 const imgsrc = '![](https://pic1.zhimg.com/';
 for (let j = 0; j < 1000000; j++) {
-	if (!fs.existsSync(`${config.zhihuId}/${j}.json`)) {
+	if (!fs.existsSync(`out/${config.zhihuId}/${j}.json`)) {
+		/**判断json文件是否存在 不存在就推出循环 */
 		break;
 	}
-
-	fs.readFile(`${config.zhihuId}/${j}.json`, (err, res) => {
+	/**
+	 * 读取json文件
+	 */
+	fs.readFile(`out/${config.zhihuId}/${j}.json`, (err, res) => {
 		if (err) {
 			throw err;
 		}
+		/**
+		 * 序列化json
+		 */
 		const jsonObj = JSON.parse(res);
 		const data = jsonObj;
+		/**
+		 * 
+		 */
 		_.times(data.length, (i) => {
-			let answer = toMarkdown(data[i].content);
+			let answer = h2m(data[i].content);
 			const reg = /<noscript>.*?<\/noscript>/g;
 			const reg2 = /src="(.*?)"/;
 			let src = answer.match(reg);
@@ -68,13 +77,14 @@ for (let j = 0; j < 1000000; j++) {
 			// 如果没有指定目录，创建之
 			fs.writeFileSync(`${dir}/${title}.md`, header, 'utf8', (err) => {
 				if (err) throw err;
-				console.log(`${title}.md`);
+				console.log(`🚫 ${title}.md`);
 			});
+			/**该方法以异步的方式将 data 插入到文件里，如果文件不存在会自动创建。data可以是任意字符串或者缓存。 */
 			fs.appendFile(`${dir}/${title}.md`, answer + copyRight, 'utf8', (err) => {
 				if (err) throw err;
-				console.log(`write JSON into${title}.md`);
+				console.log(`📲 write JSON into${title}.md`);
 			});
 		});
 	});
 }
-console.log('done!');
+console.log('🔂 done!');
