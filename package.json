@@ -1,5 +1,5 @@
 {
-  "name": "oh-hard",
+  "name": "ZhihuZhuanlan",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,9 +12,6 @@
     "cheerio": "^0.22.0",
     "h2m": "^0.5.2",
     "lodash": "^4.17.4",
-    "request": "^2.81.0",
-    "lodash": "^4.17.4",
-    "request": "^2.81.0",
-
+    "request": "^2.81.0"
   }
 }
