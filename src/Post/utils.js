@@ -1,7 +1,10 @@
-/*
-* request方法
-* @param {*} options 
-*/
+/**
+ * @author bubao 
+ * @description 
+ * @date: 2018-05-15 18:13:14 
+ * @Last Modified by: bubao
+ * @Last Modified time: 2018-05-15 18:14:11
+ */
 
 const { request, url } = require('../commonModules.js');
 const forEach = require('lodash/forEach')

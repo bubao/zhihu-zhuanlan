@@ -1,3 +1,10 @@
+/**
+ * @author bubao 
+ * @description html内容转markdown
+ * @date: 2018-05-15 17:56:12
+ * @Last Modified by: bubao
+ * @Last Modified time: 2018-05-15 18:11:43
+ */
 const fs = require('fs');
 const h2m = require('h2m');
 const times = require('lodash/times');

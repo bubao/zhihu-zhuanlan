@@ -1,3 +1,11 @@
+/**
+ * @author bubao 
+ * @description 专栏
+ * @date: 2018-05-15 17:55:58
+ * @Last Modified by: bubao
+ * @Last Modified time: 2018-05-15 18:12:53
+ */
+
 const console = require('better-console');
 const path = require('path');
 const Posts = require('./Post');

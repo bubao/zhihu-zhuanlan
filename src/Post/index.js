@@ -1,9 +1,9 @@
 /**
- * 
- * @author bubao
- * @date  2018-5-13
- * @description
- *
+ * @author bubao 
+ * @date: 2018-5-13 18:04:05 
+ * @Last Modified by: bubao
+ * @description 知乎专栏爬虫
+ * @Last Modified time: 2018-05-15 18:05:07
  */
 // const imgsrc = 'https://pic1.zhimg.com/';
 const { request, cheerio, url } = require('./../commonModules.js');
