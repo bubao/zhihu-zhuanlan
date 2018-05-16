@@ -3,26 +3,67 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2018-05-15 18:11:43
+ * @Last Modified time: 2018-05-16 17:03:25
  */
 const fs = require('fs');
 const h2m = require('h2m');
+const request = require('./request');
 const times = require('lodash/times');
 const compact = require('lodash/compact');
 const console = require('better-console');
+const TurndownService = require('turndown');
 
 const imgsrc = '![](https://pic1.zhimg.com/';
+const Turndown = new TurndownService();
+
+Turndown.addRule('indentedCodeBlock', {
+	filter: function (node, options) {
+		return (
+			options.codeBlockStyle === 'indented' &&
+			node.nodeName === 'PRE' &&
+			node.firstChild &&
+			node.firstChild.nodeName === 'CODE'
+		)
+	},
+	replacement: function (content, node, options) {
+		return (
+			'\n```' + node.firstChild.getAttribute('class') + '\n' +
+			content +
+			'\n```\n'
+		)
+	}
+});
+Turndown.addRule('fencedCodeBlock', {
+	filter: function (node, options) {
+
+		return (
+			options.codeBlockStyle === 'fenced' &&
+			node.nodeName === 'PRE' &&
+			node.firstChild &&
+			node.firstChild.nodeName === 'CODE'
+		)
+	},
+
+	replacement: function (content, node, options) {
+		return (
+			'\n```' + node.firstChild.getAttribute('class') + '\n' +
+			content +
+			'\n```\n'
+		)
+	}
+});
 
 /**
- * markdown(path, zhihuId[, format])
+ * markdown(path, zhihuId, res)
  * @param {string} path 下载地址
  * @param {string} zhihuId 知乎专栏ID
- * @param {string} format 指定为ebook，或者留空
+ * @param {string} res 内容
  */
-const markdown = (path, zhihuId, res, format) => {
+const markdown = async (path, zhihuId, res) => {
 	const jsonObj = res;
 	times(Object.getOwnPropertyNames(jsonObj).length, (i) => {
-		let content = h2m(jsonObj[i].content);
+		jsonObj[i].content = jsonObj[i].content.replace(/<br>/g, '\n').replace(/<code lang="/g, '<pre><code class="language-').replace(/\n<\/code>/g, '\n<\/code><\/pre>');
+		let content = Turndown.turndown(jsonObj[i].content);
 		const reg = /<noscript>.*?<\/noscript>/g;
 		const reg2 = /src="(.*?)"/;
 		let src = content.match(reg);
@@ -60,7 +101,10 @@ const markdown = (path, zhihuId, res, format) => {
 			if (err) throw err;
 			console.log(`❌ ${Ti};${title}.md`);
 		});
-
+		fs.writeFileSync(`${path}/${zhihuId}/${Ti};${title}.json`, JSON.stringify(jsonObj[i]), 'utf8', (err) => {
+			if (err) throw err;
+			console.log(`❌ ${Ti};${title}.json`);
+		});
 		fs.appendFile(`${path}/${zhihuId}/${Ti};${title}.md`, content + copyRight, 'utf8', (err) => {
 			if (err) throw err;
 			console.log(`🍅  ${Ti};${title}.md`);

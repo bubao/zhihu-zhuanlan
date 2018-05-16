@@ -2,5 +2,7 @@ test
 out
 node_modules
 yarn.lock
-oh-hard
 package-lock.json
+
+oh-hard
+study-fe
