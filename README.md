@@ -38,6 +38,13 @@ ID: 'study-fe'
 npm start
 ```
 
+也可以作为模块使用
+
+```js
+const zhuanlan = require('./src');
+zhuanlan('study-fe','./');
+```
+
 ## 待改进
 
 `code` 标签转 MD 有点缺陷
