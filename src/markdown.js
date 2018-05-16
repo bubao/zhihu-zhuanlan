@@ -3,11 +3,9 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2018-05-16 17:03:25
+ * @Last Modified time: 2018-05-16 17:05:13
  */
 const fs = require('fs');
-const h2m = require('h2m');
-const request = require('./request');
 const times = require('lodash/times');
 const compact = require('lodash/compact');
 const console = require('better-console');

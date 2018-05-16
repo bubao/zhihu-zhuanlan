@@ -1,7 +1,7 @@
 {
-	"name": "ZhihuZhuanlan",
-	"version": "1.0.1",
-	"description": "",
+	"name": "zhihu-zhuanlan",
+	"version": "1.0.2",
+	"description": "知乎专栏爬虫",
 	"main": "index.js",
 	"scripts": {
 		"start": "node test.js"
@@ -10,8 +10,6 @@
 	"license": "MIT",
 	"dependencies": {
 		"better-console": "^1.0.1",
-		"cheerio": "^0.22.0",
-		"h2m": "^0.6.0",
 		"lodash": "^4.17.10",
 		"request": "^2.85.0",
 		"turndown": "^4.0.2"
