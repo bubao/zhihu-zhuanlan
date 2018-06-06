@@ -3,7 +3,7 @@
  * @date: 2018-5-13 18:04:05 
  * @Last Modified by: bubao
  * @description 知乎专栏爬虫
- * @Last Modified time: 2018-05-16 17:06:04
+ * @Last Modified time: 2018-06-06 19:02:20
  */
 // const imgsrc = 'https://pic1.zhimg.com/';
 const { request, url } = require('./../commonModules.js');
@@ -19,20 +19,16 @@ const API = require('./api.js');
  * @param {string} countName 传入countName
  * @param {Function} infoMethod 传入方法
  */
-const universalMethod = (ID, API, countName, infoMethod) => {
+const universalMethod = async (ID, API, countName, infoMethod) => {
 	const urlTemplate = template(API)({ postID: ID, columnsID: ID });
-	const count = infoMethod(ID).then((c) => {
-		return c[countName];
-	});
+	const count = (await infoMethod(ID))[countName];
 	return new Promise((resolve, reject) => {
-		count.then(res1 => {
-			loopMethod(assign({
-				options: {
-					urlTemplate,
-				}
-			}, rateMethod(res1, 20)), function (res2) {
-				resolve(res2);
-			});
+		loopMethod(assign({
+			options: {
+				urlTemplate,
+			}
+		}, rateMethod(count, 20)), function (res) {
+			resolve(res);
 		});
 	});
 
@@ -58,6 +54,5 @@ const zhuanlanInfo = async (columnsID) => {
 const zhuanlanPosts = (columnsID) => {
 	return universalMethod(columnsID, API.post.page, 'postsCount', zhuanlanInfo);
 };
-
 
 module.exports = zhuanlanPosts;

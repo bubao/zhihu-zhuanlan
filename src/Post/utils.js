@@ -3,7 +3,7 @@
  * @description 
  * @date: 2018-05-15 18:13:14 
  * @Last Modified by: bubao
- * @Last Modified time: 2018-05-15 18:14:11
+ * @Last Modified time: 2018-06-06 15:51:31
  */
 
 const { request, url } = require('../commonModules.js');
@@ -11,13 +11,10 @@ const forEach = require('lodash/forEach')
 const fs = require('fs');
 
 let requestMethod = (options) => {
-	return req(options).then((c) => {
+	return request(options).then((c) => {
 		return JSON.parse(c.body);
 	});
 };
-async function req(options) {
-	return await request(options);
-}
 /**
 * 
 * @param {nubmer} count 总数
@@ -73,6 +70,5 @@ module.exports = {
 	loopMethod,
 	cycleMethod,
 	rateMethod,
-	requestMethod,
-	req
+	requestMethod
 }

@@ -3,9 +3,9 @@
  * @description 专栏
  * @date: 2018-05-15 17:55:58
  * @Last Modified by: bubao
- * @Last Modified time: 2018-05-15 18:12:53
+ * @Last Modified time: 2018-06-06 16:46:52
  */
-
+const mkdirp = require('mkdirp');
 const console = require('better-console');
 const path = require('path');
 const Posts = require('./Post');
@@ -16,15 +16,16 @@ const fs = require('fs');
  * mkdir
  * @param {string} filePath dir路径
  */
-function mkdir(filePath, name) {
+function mkdir(filePath) {
 	if (fs.existsSync(`${filePath}`)) {
-		console.log(`⚓  ${name} 文件夹已经存在`);
+		console.log(`⚓  ${path.basename(filePath)} 文件夹已经存在`);
 	} else {
-		fs.mkdir(`${filePath}`, (err) => {
+		mkdirp(`${filePath}`, (err) => {
 			if (err) {
 				console.error(err);
+			} else {
+				console.log(`🤖 创建 ${path.basename(filePath)}文件夹成功`);
 			}
-			console.log(`🤖 创建 ${name}文件夹成功`);
 		});
 	}
 }
@@ -36,7 +37,7 @@ function mkdir(filePath, name) {
  */
 async function Post(postID, localPath = './') {
 	console.log(`-----🐛 ${postID} start -----`);
-	mkdir(path.resolve(localPath, postID), postID);
+	mkdir(path.resolve(localPath, postID));
 	markdown(localPath, postID, await Posts(postID));
 };
 
