@@ -3,7 +3,7 @@
  * @date: 2018-5-13 18:04:05 
  * @Last Modified by: bubao
  * @description 知乎专栏爬虫
- * @Last Modified time: 2018-06-06 19:02:20
+ * @Last Modified time: 2018-06-07 14:16:20
  */
 // const imgsrc = 'https://pic1.zhimg.com/';
 const { request, url } = require('./../commonModules.js');
@@ -23,13 +23,15 @@ const universalMethod = async (ID, API, countName, infoMethod) => {
 	const urlTemplate = template(API)({ postID: ID, columnsID: ID });
 	const count = (await infoMethod(ID))[countName];
 	return new Promise((resolve, reject) => {
-		loopMethod(assign({
-			options: {
-				urlTemplate,
-			}
-		}, rateMethod(count, 20)), function (res) {
-			resolve(res);
-		});
+		loopMethod(
+			assign(
+				{
+					options: {
+						urlTemplate,
+					}
+				},
+				rateMethod(count, 20)
+			), resolve);
 	});
 
 };

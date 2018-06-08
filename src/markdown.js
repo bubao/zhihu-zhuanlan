@@ -3,7 +3,7 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2018-06-06 19:09:43
+ * @Last Modified time: 2018-06-08 19:02:32
  */
 const fs = require('fs');
 const times = require('lodash/times');
@@ -73,14 +73,15 @@ const markdown = async (path, zhihuId, res) => {
 		times(src.length, (imageNum) => {
 			content = content.replace(src[imageNum], imageList[imageNum]);
 		});
-		const pattern = new RegExp("[`~!@#$^&'*()=|{}':;',\\[\\]<>/?~！@#￥……&*（）&mdash;—|{}【】‘；：”“'。，、？]");
+		// const pattern = new RegExp("[`~!@#$^&'*()=|{}':;',\\[\\]<>/?~！@#￥……&*（）&mdash;—|{}【】‘；：”“'。，、？]");
+		const pattern = new RegExp("[？、,\\[\\]╲*“”<>|（）]");
 		let rs = '';
 		let { title } = jsonObj[i];
 		times(title.length, (k) => {
 			const rs2 = title.substr(k, 1).replace(/"/, ''); // 使用正则表达式单独去除双引号
 			rs += rs2.replace(pattern, '');
 		});
-		title = Buffer.from(rs);
+		rs = rs.replace("\\\\", '');
 		content = content.replace(/!\[\]\(/g, imgsrc);
 
 		const time = `${jsonObj[i].publishedTime}`;
@@ -90,22 +91,21 @@ const markdown = async (path, zhihuId, res) => {
 		const postId = jsonObj[i].url;
 		const copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postId})\n\n\n`;
 		const header = `# ${title}\n\ndate: ${T.replace(",", " ")} \n\n\n`;
-
 		if (!fs.existsSync(`${path}/${zhihuId}`)) {
 			fs.mkdirSync(`${path}/${zhihuId}`);
 		}
 		// 如果没有指定目录，创建之
-		fs.writeFileSync(`${path}/${zhihuId}/${Ti};${title}.md`, header, 'utf8', (err) => {
+		fs.writeFileSync(`${path}/${zhihuId}/${Ti};${rs}.md`, header, 'utf8', (err) => {
 			if (err) throw err;
-			console.log(`❌ ${Ti};${title}.md`);
+			console.log(`❌ ${Ti};${rs}.md`);
 		});
-		fs.writeFileSync(`${path}/${zhihuId}/${Ti};${title}.json`, JSON.stringify(jsonObj[i]), 'utf8', (err) => {
+		fs.writeFileSync(`${path}/${zhihuId}/${Ti};${rs}.json`, JSON.stringify(jsonObj[i]), 'utf8', (err) => {
 			if (err) throw err;
-			console.log(`❌ ${Ti};${title}.json`);
+			console.log(`❌ ${Ti};${rs}.json`);
 		});
-		fs.appendFile(`${path}/${zhihuId}/${Ti};${title}.md`, content + copyRight, 'utf8', (err) => {
+		fs.appendFile(`${path}/${zhihuId}/${Ti};${rs}.md`, content + copyRight, 'utf8', (err) => {
 			if (err) throw err;
-			console.log(`🍅  ${Ti};${title}.md`);
+			console.log(`🍅  ${Ti};${rs}.md`);
 		});
 	});
 };
