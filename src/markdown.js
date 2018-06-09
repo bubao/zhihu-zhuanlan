@@ -3,7 +3,7 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2018-06-08 19:02:32
+ * @Last Modified time: 2018-06-09 20:42:19
  */
 const fs = require('fs');
 const times = require('lodash/times');
@@ -52,12 +52,12 @@ Turndown.addRule('fencedCodeBlock', {
 });
 
 /**
- * markdown(path, zhihuId, res)
+ * markdown(path, dirname, res)
  * @param {string} path 下载地址
- * @param {string} zhihuId 知乎专栏ID
- * @param {string} res 内容
+ * @param {string} dirname 知乎专栏ID
+ * @param {string} res 数据
  */
-const markdown = async (path, zhihuId, res) => {
+const markdown = async (path, dirname, res) => {
 	const jsonObj = res;
 	times(Object.getOwnPropertyNames(jsonObj).length, (i) => {
 		jsonObj[i].content = jsonObj[i].content.replace(/<br>/g, '\n').replace(/<code lang="/g, '<pre><code class="language-').replace(/\n<\/code>/g, '\n<\/code><\/pre>');
@@ -91,19 +91,19 @@ const markdown = async (path, zhihuId, res) => {
 		const postId = jsonObj[i].url;
 		const copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postId})\n\n\n`;
 		const header = `# ${title}\n\ndate: ${T.replace(",", " ")} \n\n\n`;
-		if (!fs.existsSync(`${path}/${zhihuId}`)) {
-			fs.mkdirSync(`${path}/${zhihuId}`);
+		if (!fs.existsSync(`${path}/${dirname}`)) {
+			fs.mkdirSync(`${path}/${dirname}`);
 		}
 		// 如果没有指定目录，创建之
-		fs.writeFileSync(`${path}/${zhihuId}/${Ti};${rs}.md`, header, 'utf8', (err) => {
+		fs.writeFileSync(`${path}/${dirname}/${Ti};${rs}.md`, header, 'utf8', (err) => {
 			if (err) throw err;
 			console.log(`❌ ${Ti};${rs}.md`);
 		});
-		fs.writeFileSync(`${path}/${zhihuId}/${Ti};${rs}.json`, JSON.stringify(jsonObj[i]), 'utf8', (err) => {
+		fs.writeFileSync(`${path}/${dirname}/${Ti};${rs}.json`, JSON.stringify(jsonObj[i]), 'utf8', (err) => {
 			if (err) throw err;
 			console.log(`❌ ${Ti};${rs}.json`);
 		});
-		fs.appendFile(`${path}/${zhihuId}/${Ti};${rs}.md`, content + copyRight, 'utf8', (err) => {
+		fs.appendFile(`${path}/${dirname}/${Ti};${rs}.md`, content + copyRight, 'utf8', (err) => {
 			if (err) throw err;
 			console.log(`🍅  ${Ti};${rs}.md`);
 		});

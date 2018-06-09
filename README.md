@@ -18,7 +18,7 @@
 git clone https://github.com/bubao/GetZhiHuZhuanLan.git
 ```
 
-**安装**
+**安装依赖模块**
 
 ```shell
 npm install
@@ -41,13 +41,45 @@ npm start
 也可以作为模块使用
 
 ```js
-const zhuanlan = require('./src');
+import post, { markdown, zhuanlan } from './index';
 zhuanlan('study-fe','./');
 ```
 
+## API
+
+### Post
+
+如果只想得到返回的内容，而不是经过MarkDown模块处理的数据。
+
+```js
+post= (columnsID: string) => Promise<any>
+```
+
+- `columnsID`:知乎专栏的专栏ID
+
+### zhuanlan
+
+```js
+zhuanlan = (postID: string, localPath?: string) => Promise<void>
+```
+
+- `postID`:知乎专栏的专栏ID
+- `localPath`:下载到本地的位置
+
+### MarkDown
+
+```js
+markdown = (path: string, dirname: string, res: string) => Promise<void>
+```
+
+- `path`:路径
+- `dirname`:文件夹名
+- `res`:数据
+
 ## 待改进
 
-~~`code` 标签转 MD 有点缺陷~~
+- ~~`code` 标签转 MD 有点缺陷~~
+- windows文件命名
 
 ## 使用的模块
 
