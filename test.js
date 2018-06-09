@@ -3,9 +3,9 @@
  * @description 测试
  * @date: 2017-04-28 20:00:44
  * @Last Modified by: bubao
- * @Last Modified time: 2018-06-09 22:10:53
+ * @Last Modified time: 2018-06-10 02:00:43
  */
-import post, { markdown, zhuanlan } from './index';
+const { zhuanlan, markdown, post } = require('./index');
 const config = require('./config.js');
 zhuanlan(config.ID, './');
 // markdown()

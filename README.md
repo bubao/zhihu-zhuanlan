@@ -41,13 +41,13 @@ npm start
 也可以作为模块使用
 
 ```js
-import post, { markdown, zhuanlan } from './index';
+import {post, markdown, zhuanlan } from './index';
 zhuanlan('study-fe','./');
 ```
 
 ## API
 
-### Post
+### post
 
 如果只想得到返回的内容，而不是经过MarkDown模块处理的数据。
 
