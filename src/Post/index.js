@@ -3,10 +3,10 @@
  * @date: 2018-5-13 18:04:05 
  * @Last Modified by: bubao
  * @description 知乎专栏爬虫
- * @Last Modified time: 2018-06-07 14:16:20
+ * @Last Modified time: 2018-09-13 16:47:05
  */
 // const imgsrc = 'https://pic1.zhimg.com/';
-const { request, url } = require('./../commonModules.js');
+const { request } = require('./../commonModules.js');
 const { loopMethod, rateMethod } = require('./utils.js');
 const assign = require('lodash/assign');
 const template = require('lodash/template');

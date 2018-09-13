@@ -3,10 +3,14 @@
  * @description module
  * @date: 2017-04-28 20:00:44
  * @Last Modified by: bubao
- * @Last Modified time: 2018-06-10 01:57:54
+ * @Last Modified time: 2018-09-13 16:50:31
  */
 const zhuanlan = require('./src');
 const post = require("./src/Post");
-const markdown = require('./src/markdown');
+const markdown = require('./src/decode');
 
-module.exports = { post, markdown, zhuanlan };
+// module.exports = { post, markdown, zhuanlan };
+module.exports = {
+	zhuanlan,
+	post
+}

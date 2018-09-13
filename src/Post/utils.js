@@ -3,12 +3,11 @@
  * @description 
  * @date: 2018-05-15 18:13:14 
  * @Last Modified by: bubao
- * @Last Modified time: 2018-06-06 15:51:31
+ * @Last Modified time: 2018-09-13 16:47:25
  */
 
 const { request, url } = require('../commonModules.js');
 const forEach = require('lodash/forEach')
-const fs = require('fs');
 
 let requestMethod = (options) => {
 	return request(options).then((c) => {

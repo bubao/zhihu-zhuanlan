@@ -4,11 +4,9 @@
 >
 > Created: 2017 年 04 月 28 日 20:00:44
 >
-> Modified : 2018-5-15 18:21:05
+> Modified : 2018-9-13 16:59:46
 
 知乎是一个好地方，最近有空，想把知乎上的文章爬下来，放在本地有空慢慢看。项目模仿 [zhangolve 的项目](https://github.com/zhangolve/zhihu-answer-convert-to-md-by-node)。
-
-如今因为知乎api和知乎专栏的网页布局有所改变，现在重写了这个爬虫，api模块使用的是[zhihu](https://www.npmjs.com/package/zhihu)的重构代码，模块中的request模块再次二次封装。
 
 ## 怎么用
 
@@ -41,8 +39,16 @@ npm start
 也可以作为模块使用
 
 ```js
-import {post, markdown, zhuanlan } from './index';
-zhuanlan('study-fe','./');
+import {zhuanlan, post } from './index';
+
+post('study-fe').then( res =>{
+    console.log(res);
+});
+
+zhuanlan('study-fe').then( res =>{
+    console.log(res);
+});
+
 ```
 
 ## API
@@ -60,21 +66,10 @@ post= (columnsID: string) => Promise<any>
 ### zhuanlan
 
 ```js
-zhuanlan = (postID: string, localPath?: string) => Promise<void>
+zhuanlan = (postID: string) => Promise<void>
 ```
 
 - `postID`:知乎专栏的专栏ID
-- `localPath`:下载到本地的位置
-
-### MarkDown
-
-```js
-markdown = (path: string, dirname: string, res: string) => Promise<void>
-```
-
-- `path`:路径
-- `dirname`:文件夹名
-- `res`:数据
 
 ## 待改进
 
@@ -83,8 +78,6 @@ markdown = (path: string, dirname: string, res: string) => Promise<void>
 
 ## 使用的模块
 
-`better-console`：用于在控制台打印，eslint不允许使用系统自带的
-
 `lodash`：最好用的工具
 
 `request`：用于请求网络
@@ -92,3 +85,13 @@ markdown = (path: string, dirname: string, res: string) => Promise<void>
 `turndown`：用于将HTML转成Markdown
 
 `zhihu`：没有直接使用，部分代码是这个模块的，由于这个项目只使用了知乎专栏的API，所以只引用了部分的代码。
+
+## History
+
+### 2018-09-13 16:59:46
+
+这次封装为模块，可二次开发。
+
+### 2018-5-15 18:21:05
+
+如今因为知乎api和知乎专栏的网页布局有所改变，现在重写了这个爬虫，api模块使用的是[zhihu](https://www.npmjs.com/package/zhihu)的重构代码，模块中的request模块再次二次封装。
