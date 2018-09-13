@@ -3,15 +3,9 @@
  * @description request封装
  * @date: 2018-05-15 18:09:27 
  * @Last Modified by: bubao
- * @Last Modified time: 2018-05-15 18:09:50
+ * @Last Modified time: 2018-09-13 17:07:07
  */
-/**
- * @author bubao 
- * @date: 2018-05-15 17:55:53 
- * @Last Modified by: bubao
- * @description request封装
- * @Last Modified time: 2018-05-15 18:05:58
- */
+
 const request = require('request');
 const isFunction = require('lodash/isFunction');
 const fs = require('fs');
