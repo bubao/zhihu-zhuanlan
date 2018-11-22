@@ -3,9 +3,8 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2018-11-22 19:50:47
+ * @Last Modified time: 2018-11-22 20:25:34
  */
-// const fs = require('fs');
 const times = require('lodash/times');
 const compact = require('lodash/compact');
 const TurndownService = require('turndown');
