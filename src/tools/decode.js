@@ -3,7 +3,7 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2018-11-22 21:57:30
+ * @Last Modified time: 2018-11-22 23:09:47
  */
 const times = require('lodash/times');
 const compact = require('lodash/compact');
@@ -82,7 +82,6 @@ const decode = (res) => {
 			const copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postUrl})\n\n\n`;
 			const header = `# ${title}\n\ndate: ${time.replace(",", " ")} \n\n\n`;
 			ArrayObj.push({
-				postId,
 				title,
 				filename,
 				header,

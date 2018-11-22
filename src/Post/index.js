@@ -3,12 +3,10 @@
  * @date: 2018-5-13 18:04:05 
  * @Last Modified by: bubao
  * @description 知乎专栏爬虫
- * @Last Modified time: 2018-11-22 19:35:07
+ * @Last Modified time: 2018-11-22 23:04:53
  */
 
-const API = require('./api.js');
-const assign = require('lodash/assign');
-const template = require('lodash/template');
+const api = require('./api.js');
 const { loopMethod, rateMethod } = require('./utils.js');
 const { request, assign, template } = require('../tools/commonModules.js');
 
@@ -19,10 +17,18 @@ const { request, assign, template } = require('../tools/commonModules.js');
  * @param {string} countName 传入countName
  * @param {Function} infoMethod 传入方法
  */
-const universalMethod = async (ID, API, countName, infoMethod) => {
+/**
+ * 通用方法
+ * @param {string||number} ID 传入ID
+ * @param {string} API 传入api
+ * @param {string} countName 传入countName
+ * @param {Function} infoMethod 传入方法
+ */
+const universalMethod = async (ID, API, countName, infoMethod, spinner) => {
 	const urlTemplate = template(API)({ postID: ID, columnsID: ID });
 	const count = (await infoMethod(ID))[countName];
-	return new Promise((resolve, reject) => {
+	if (spinner) spinner.start();
+	return new Promise((resolve) => {
 		loopMethod(
 			assign(
 				{
@@ -31,7 +37,7 @@ const universalMethod = async (ID, API, countName, infoMethod) => {
 					}
 				},
 				rateMethod(count, 20)
-			), resolve);
+			), resolve, spinner);
 	});
 };
 
@@ -40,20 +46,26 @@ const universalMethod = async (ID, API, countName, infoMethod) => {
  * @param {string} columnsID //专栏ID
  */
 const zhuanlanInfo = async (columnsID) => {
-	const urlTemplate = template(API.post.columns)({ columnsID });
+	const urlTemplate = template(api.post.columns)({ columnsID });
 	let object = {};
 	object = {
-		url: urlTemplate,
+		uri: urlTemplate,
 		gzip: true,
 	};
-	return JSON.parse((await request(object)).body);
+
+	return new Promise((resolve) => {
+		request(object).then((data) => {
+			resolve(JSON.parse(data.body));
+		});
+	});
 }
 /**
  * 专栏所有post
  * @param {string} columnsID 专栏ID
+ * @param {object} spinner ora实例
  */
-const zhuanlanPosts = (columnsID) => {
-	return universalMethod(columnsID, API.post.page, 'postsCount', zhuanlanInfo);
+const zhuanlanPosts = (columnsID, spinner) => {
+	return universalMethod(columnsID, api.post.page, 'postsCount', zhuanlanInfo, spinner);
 };
 
 module.exports = zhuanlanPosts;

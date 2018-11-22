@@ -7,6 +7,9 @@ const writeFile = (path, filename, data, format) => {
 	});
 }
 const run = async (path, postId) => {
+	if (!fs.existsSync(`${path}/${postId}`)) {
+		fs.mkdir(`${path}/${postId}`, () =>{});
+	}
 	const arrJson = await zhuanlan(postId);
 	arrJson.MarkDown.forEach(element => {
 		const {
@@ -15,8 +18,8 @@ const run = async (path, postId) => {
 			content,
 			copyRight,
 			json } = element;
-		writeFile(path, filename, header + content + copyRight, "md");
-		writeFile(path, filename, json, "json");
+		writeFile(`${path}/${postId}/${filename}`, filename, header + content + copyRight, "md");
+		writeFile(`${path}/${postId}/${filename}`, filename, JSON.stringify(json), "json");
 	});
 }
 
