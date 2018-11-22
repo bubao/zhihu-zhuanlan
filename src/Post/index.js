@@ -3,7 +3,7 @@
  * @date: 2018-5-13 18:04:05 
  * @Last Modified by: bubao
  * @description 知乎专栏爬虫
- * @Last Modified time: 2018-11-22 23:04:53
+ * @Last Modified time: 2018-11-22 23:35:22
  */
 
 const api = require('./api.js');
@@ -17,13 +17,7 @@ const { request, assign, template } = require('../tools/commonModules.js');
  * @param {string} countName 传入countName
  * @param {Function} infoMethod 传入方法
  */
-/**
- * 通用方法
- * @param {string||number} ID 传入ID
- * @param {string} API 传入api
- * @param {string} countName 传入countName
- * @param {Function} infoMethod 传入方法
- */
+
 const universalMethod = async (ID, API, countName, infoMethod, spinner) => {
 	const urlTemplate = template(API)({ postID: ID, columnsID: ID });
 	const count = (await infoMethod(ID))[countName];
