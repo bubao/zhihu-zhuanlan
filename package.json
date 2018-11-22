@@ -3,15 +3,12 @@
 	"version": "0.0.1",
 	"description": "知乎专栏爬虫",
 	"main": "index.js",
-	"scripts": {
-		"start": "node test.js"
-	},
 	"author": "bubao",
 	"license": "MIT",
 	"dependencies": {
 		"lodash": "^4.17.10",
 		"mkdirp": "^0.5.1",
-		"request": "^2.85.0",
+		"self-promise-request": "git+https://github.com/bubao/self-promise-request.git#v0.0.1",
 		"turndown": "^4.0.2"
 	}
 }

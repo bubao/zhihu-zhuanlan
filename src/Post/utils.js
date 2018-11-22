@@ -3,27 +3,35 @@
  * @description 
  * @date: 2018-05-15 18:13:14 
  * @Last Modified by: bubao
- * @Last Modified time: 2018-09-13 16:47:25
+ * @Last Modified time: 2018-11-22 19:35:17
  */
 
-const { request, url } = require('../commonModules.js');
-const forEach = require('lodash/forEach')
+const { url, request, forEach } = require('../tools/commonModules.js');
 
-let requestMethod = (options) => {
+const requestMethod = (options) => {
 	return request(options).then((c) => {
 		return JSON.parse(c.body);
 	});
 };
+
+const cycleMethod = (cycle) => {
+	const defaultCycle = 20;
+	if (cycle && cycle !== defaultCycle) {
+		cycle %= defaultCycle;
+	}
+	cycle = cycle || defaultCycle;
+	return cycle;
+}
 /**
-* 
+*
 * @param {nubmer} count 总数
 * @param {nubmer} cycle 周期
 */
-let rateMethod = (count, cycle) => {
+const rateMethod = (count, cycle) => {
 	count = count === undefined ? 20 : count;
 	cycle = cycleMethod(cycle);
-	let posts = count % cycle;
-	let times = (count - posts) / cycle;
+	const posts = count % cycle;
+	const times = (count - posts) / cycle;
 	return {
 		times,
 		count,
@@ -33,22 +41,14 @@ let rateMethod = (count, cycle) => {
 	}
 }
 
-let cycleMethod = (cycle) => {
-	let defaultCycle = 20;
-	if (cycle && cycle !== defaultCycle) {
-		cycle = cycle % defaultCycle;
-	}
-	cycle = cycle || defaultCycle;
-	return cycle;
-}
 /**
- * 
+ *
  * @param {object} config 配置信息
  * @param {function} callback 回调函数
  */
-let loopMethod = (config, callback) => {
-	let { urlTemplate, ...options } = config.options;
-	let opts = {
+const loopMethod = (config, callback, spinner) => {
+	const { urlTemplate, ...options } = config.options;
+	const opts = {
 		url: url.resolve(urlTemplate, `?limit=${config.cycle}&offset=${config.writeTimes * 20}`),
 		...options
 	}
@@ -57,10 +57,11 @@ let loopMethod = (config, callback) => {
 			config.allObject[index + config.writeTimes * 20] = item;
 		});
 		if (config.writeTimes === config.times) {
+			if (spinner) spinner.succeed(`It's OK!`);
 			callback(config.allObject);
 		} else {
 			config.writeTimes += 1;
-			loopMethod(config, callback);
+			loopMethod(config, callback, spinner);
 		}
 	})
 }

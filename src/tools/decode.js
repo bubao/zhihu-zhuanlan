@@ -3,7 +3,7 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2018-09-13 16:54:13
+ * @Last Modified time: 2018-11-22 19:50:47
  */
 // const fs = require('fs');
 const times = require('lodash/times');
@@ -37,7 +37,7 @@ Turndown.addRule('fencedCodeBlock', {
  * decode
  * @param {string} res 数据
  */
-const decode = async (res) => {
+const decode = (res) => {
 	const jsonObj = res;
 	let ArrayObj = [];
 	const jsonObjLength = Object.getOwnPropertyNames(jsonObj).length;

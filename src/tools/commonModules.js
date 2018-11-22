@@ -3,14 +3,18 @@
  * @description 
  * @date: 2018-05-15 17:59:47
  * @Last Modified by: bubao
- * @Last Modified time: 2018-09-13 16:06:26
+ * @Last Modified time: 2018-11-22 19:26:18
  */
 
 const fs = require('fs');
 const url = require('url');
 const path = require('path');
 const mkdirp = require('mkdirp');
-const request = require('./request.js');
+const assign = require('lodash/assign');
+const forEach = require('lodash/forEach');
+const template = require('lodash/template');
+const { request } = require('self-promise-request');
+
 const MAX_SAFE_INTEGER = 9007199254740991;
 
 function isLength(value) {
@@ -54,5 +58,8 @@ module.exports = {
 	url,
 	path,
 	mkdir,
+	assign,
+	forEach,
 	request,
+	template,
 };

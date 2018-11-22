@@ -3,14 +3,14 @@
  * @date: 2018-5-13 18:04:05 
  * @Last Modified by: bubao
  * @description 知乎专栏爬虫
- * @Last Modified time: 2018-09-13 16:47:05
+ * @Last Modified time: 2018-11-22 19:35:07
  */
-// const imgsrc = 'https://pic1.zhimg.com/';
-const { request } = require('./../commonModules.js');
-const { loopMethod, rateMethod } = require('./utils.js');
+
+const API = require('./api.js');
 const assign = require('lodash/assign');
 const template = require('lodash/template');
-const API = require('./api.js');
+const { loopMethod, rateMethod } = require('./utils.js');
+const { request, assign, template } = require('../tools/commonModules.js');
 
 /**
  * 通用方法
@@ -33,7 +33,6 @@ const universalMethod = async (ID, API, countName, infoMethod) => {
 				rateMethod(count, 20)
 			), resolve);
 	});
-
 };
 
 /**
