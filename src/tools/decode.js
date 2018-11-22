@@ -3,11 +3,12 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2018-11-22 21:55:25
+ * @Last Modified time: 2018-11-22 21:57:30
  */
 const times = require('lodash/times');
 const compact = require('lodash/compact');
 const TurndownService = require('turndown');
+const filenamify = require('filenamify');
 const imgsrc = '![](https://pic1.zhimg.com/';
 const Turndown = new TurndownService();
 
