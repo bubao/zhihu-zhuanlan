@@ -3,11 +3,11 @@
  * @description 专栏
  * @date: 2018-05-15 17:55:58
  * @Last Modified by: bubao
- * @Last Modified time: 2018-11-22 23:57:52
+ * @Last Modified time: 2018-11-23 00:15:53
  */
 
-const Posts = require('./Post');
-const decode = require('./tools/decode');
+const Posts = require('./Post/index.js');
+const decode = require('./tools/decode.js');
 
 /**
  *  知乎专栏抓取器
