@@ -4,7 +4,7 @@
 >
 > Created: 2017 年 04 月 28 日 20:00:44
 >
-> Modified : 2018-11-22 22:23:23
+> Modified : 2019-1-6 22:42:48
 
 知乎是一个好地方，最近有空，想把知乎上的文章爬下来，放在本地有空慢慢看。项目模仿 [zhangolve 的项目](https://github.com/zhangolve/zhihu-answer-convert-to-md-by-node)。
 
@@ -40,7 +40,7 @@ zhuanlan('study-fe').then( res =>{
 如果只想得到返回的内容，而不是经过MarkDown模块处理的数据。
 
 ```js
-post= (postID: string) => Promise<any>
+post = (postID: string) => Promise<any>
 ```
 
 - `postID`:知乎专栏的专栏ID，例如`https://zhuanlan.zhihu.com/study-fe`的 `postID` 值是 `study-fe`
@@ -68,7 +68,13 @@ zhuanlan = (postID: string) => Promise<void>
 
 `filenamify`: 解决 windows 文件命名错误问题
 
+`cheerio`: 解析DOM
+
 ## History
+
+### 2019-1-6 22:39:57
+
+知乎API更新，重写部分代码。
 
 ### 2018-11-22 22:21:40
 

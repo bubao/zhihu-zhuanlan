@@ -3,7 +3,7 @@
  * @description 
  * @date: 2018-05-15 18:13:14 
  * @Last Modified by: bubao
- * @Last Modified time: 2018-11-22 19:35:17
+ * @Last Modified time: 2019-01-06 21:57:59
  */
 
 const { url, request, forEach } = require('../tools/commonModules.js');
@@ -37,7 +37,7 @@ const rateMethod = (count, cycle) => {
 		count,
 		cycle,
 		writeTimes: 0,
-		allObject: {}
+		allObject: []
 	}
 }
 
@@ -53,11 +53,10 @@ const loopMethod = (config, callback, spinner) => {
 		...options
 	}
 	requestMethod(opts).then(c => {
-		forEach(c, (item, index) => {
-			config.allObject[index + config.writeTimes * 20] = item;
+		forEach(c.data, (item) => {
+			config.allObject.push(item);
 		});
 		if (config.writeTimes === config.times) {
-			if (spinner) spinner.succeed(`It's OK!`);
 			callback(config.allObject);
 		} else {
 			config.writeTimes += 1;

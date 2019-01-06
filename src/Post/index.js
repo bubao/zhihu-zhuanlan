@@ -3,12 +3,13 @@
  * @date: 2018-5-13 18:04:05 
  * @Last Modified by: bubao
  * @description 知乎专栏爬虫
- * @Last Modified time: 2018-11-22 23:35:22
+ * @Last Modified time: 2019-01-06 22:45:30
  */
 
 const api = require('./api.js');
 const { loopMethod, rateMethod } = require('./utils.js');
 const { request, assign, template } = require('../tools/commonModules.js');
+const cheerio = require('cheerio');
 
 /**
  * 通用方法
@@ -53,13 +54,50 @@ const zhuanlanInfo = async (columnsID) => {
 		});
 	});
 }
+
+const getPostsDom = async (info, posts = []) => {
+	let item;
+	if (info.length > 0) {
+		item = info.splice(0, 1)[0];
+		posts.push(await new Promise((resolve) => {
+			request({
+				uri: item.url,
+				gzip: true,
+			}).then((data) => {
+				resolve({
+					id: item.id,
+					body: data.body
+				});
+			});
+		}));
+		return getPostsDom(info, posts);
+	} else {
+		return posts;
+	}
+}
+
+const getJSDom = (JSDom, posts = []) => {
+	let item;
+	if (JSDom.length) {
+		item = JSDom.splice(0, 1)[0];
+		let $ = cheerio.load(item.body)
+		let res = JSON.parse($("#js-initialData").html())
+		let content = res.initialState.entities.articles[item.id]
+		posts.push(content);
+		return getJSDom(JSDom, posts);
+	} else {
+		return posts;
+	}
+}
 /**
  * 专栏所有post
  * @param {string} columnsID 专栏ID
  * @param {object} spinner ora实例
  */
-const zhuanlanPosts = (columnsID, spinner) => {
-	return universalMethod(columnsID, api.post.page, 'postsCount', zhuanlanInfo, spinner);
+const zhuanlanPosts = async (columnsID, spinner) => {
+	let info = await universalMethod(columnsID, api.post.page, 'articles_count', zhuanlanInfo, spinner);
+	let JSDom = await getPostsDom(info);
+	return getJSDom(JSDom);
 };
 
 module.exports = zhuanlanPosts;

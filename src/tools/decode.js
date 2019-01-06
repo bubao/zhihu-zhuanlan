@@ -3,14 +3,14 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2018-11-22 23:09:47
+ * @Last Modified time: 2019-01-06 22:44:18
  */
 const times = require('lodash/times');
 const compact = require('lodash/compact');
 const TurndownService = require('turndown');
 const filenamify = require('filenamify');
-const imgsrc = '![](https://pic1.zhimg.com/';
 const Turndown = new TurndownService();
+const formatDate = require('./formatDate');
 
 Turndown.addRule('indentedCodeBlock', {
 	filter(node, options) {
@@ -39,27 +39,20 @@ const replaceContent = (content) => {
  * @param {string} content 知乎专栏的Markdown内容
  */
 const replaceImage = (content) => {
-	const reg = /<noscript>.*?<\/noscript>/g;
+	const reg = /<figure><noscript>.*?<\/noscript>.*?<\/figure>/g;
 	const reg2 = /src="(.*?)"/;
 	let src = content.match(reg);
 	const imageList = [];
 	src = compact(src); // 使用lodash ，即便是src为null也能够转为空的数组
 	times(src.length, (imageNum) => {
-		imageList.push(`\n\n![](${src[imageNum].match(reg2)[1]})\n\n`);
+		imageList.push(`\n\n<img src="${src[imageNum].match(reg2)[1]}">\n\n`);
 	});
 	times(src.length, (imageNum) => {
 		content = content.replace(src[imageNum], imageList[imageNum]);
 	});
-	return content.replace(/!\[\]\(/g, imgsrc);
+	return content;
 }
 
-/**
- * 转换时间
- * @param {string} time 时间
- */
-const replaceTime = (time) => {
-	return time.replace("T", ",").replace("+08:00", "");
-}
 
 /**
  * decode
@@ -68,29 +61,29 @@ const replaceTime = (time) => {
 const decode = (res) => {
 	const jsonObj = res;
 	let ArrayObj = [];
-	const jsonObjLength = Object.getOwnPropertyNames(jsonObj).length;
 	return new Promise((resolve) => {
-		times(jsonObjLength, (i) => {
+		times(jsonObj.length, (i) => {
 			jsonObj[i].content = replaceContent(jsonObj[i].content);
+			jsonObj[i].content = replaceImage(jsonObj[i].content);
 			let content = Turndown.turndown(jsonObj[i].content);
-			content = replaceImage(content);
 			const { title } = jsonObj[i];
-			const time = replaceTime(`${jsonObj[i].publishedTime}`);
-			const filename = `${time.split(',')[0]};${filenamify(title)}`;
+			// const time = replaceTime(`${jsonObj[i].publishedTime}`);
+			const time = formatDate(jsonObj[i].updated * 1000, "yyyy-MM-dd");
+			const filename = `${time};${filenamify(title)}`;
 
 			const postUrl = jsonObj[i].url;
 			const copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postUrl})\n\n\n`;
-			const header = `# ${title}\n\ndate: ${time.replace(",", " ")} \n\n\n`;
+			const header = `# ${title}\n\ndate: ${time} \n\n\n`;
 			ArrayObj.push({
 				title,
 				filename,
 				header,
 				content,
 				copyRight,
-				time: time.split(',')[0],
+				time: time,
 				json: res[i]
 			});
-			if (jsonObjLength === ArrayObj.length) {
+			if (jsonObj.length === ArrayObj.length) {
 				resolve({
 					MarkDown: ArrayObj,
 					json: res
