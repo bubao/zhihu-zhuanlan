@@ -1,13 +1,13 @@
 /**
- * @author bubao 
+ * @author bubao
  * @description 专栏
  * @date: 2018-05-15 17:55:58
  * @Last Modified by: bubao
- * @Last Modified time: 2018-11-23 00:15:53
+ * @Last Modified time: 2019-04-07 23:17:31
  */
 
-const Posts = require('./Post/index.js');
-const decode = require('./tools/decode.js');
+const Posts = require("./Post/index.js");
+const decode = require("./tools/decode.js");
 
 /**
  *  知乎专栏抓取器
@@ -16,6 +16,6 @@ const decode = require('./tools/decode.js');
  */
 function Post(postID, spinner) {
 	return Posts(postID, spinner).then(decode);
-};
+}
 
 module.exports = Post;

@@ -6,19 +6,19 @@
  * @description  zhihu api  url template ，知乎api 接口模板
  *
  */
-'use strict';
+"use strict";
 
-const zhihu = 'https://www.zhihu.com';
-const zhuanlan = 'https://zhuanlan.zhihu.com';
-const zhimg = 'https://pic1.zhimg.com';
+const zhihu = "https://www.zhihu.com";
+const zhuanlan = "https://zhuanlan.zhihu.com";
+const zhimg = "https://pic1.zhimg.com";
 
 module.exports = {
 	zhihu,
 	zhuanlan,
 	zhimg,
 	post: {
-		info: zhuanlan + '/api/posts/<%= postID%>',
-		columns: zhuanlan + '/api/columns/<%= columnsID%>',
-		page: zhuanlan + '/api/columns/<%= columnsID %>/posts',
+		info: `${zhuanlan}/api/posts/<%= postID%>`,
+		columns: `${zhuanlan}/api/columns/<%= columnsID%>`,
+		page: `${zhuanlan}/api/columns/<%= columnsID %>/articles`
 	}
 };

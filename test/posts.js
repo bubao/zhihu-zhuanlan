@@ -1,3 +1,3 @@
-const { post } = require('../index.js');
+const { post } = require("..");
 
 post("oh-hard").then(console.log);
