@@ -3,19 +3,12 @@
  * @description
  * @date: 2018-05-15 18:13:14
  * @Last Modified by: bubao
- * @Last Modified time: 2019-04-07 23:04:00
+ * @Last Modified time: 2019-04-08 00:40:42
  */
 
 const { url, request, forEach } = require("../tools/commonModules.js");
 
-const requestMethod = options => {
-	return request(options).then(c => {
-		console.log(c.body);
-		console.log(options);
-		return JSON.parse(c.body);
-	});
-};
-
+const requestMethod = options => request(options).then(c => JSON.parse(c.body));
 const cycleMethod = cycle => {
 	const defaultCycle = 20;
 	if (cycle && cycle !== defaultCycle) {
