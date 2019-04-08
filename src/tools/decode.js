@@ -3,7 +3,7 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2019-04-07 23:17:00
+ * @Last Modified time: 2019-04-09 02:46:47
  */
 const times = require("lodash/times");
 const compact = require("lodash/compact");
@@ -62,20 +62,18 @@ const replaceImage = content => {
  * decode
  * @param {string} res 数据
  */
-const decode = res => {
-	const jsonObj = res;
+const decode = results => {
 	let ArrayObj = [];
 	return new Promise(resolve => {
-		times(jsonObj.length, i => {
-			jsonObj[i].content = replaceContent(jsonObj[i].content);
-			jsonObj[i].content = replaceImage(jsonObj[i].content);
-			let content = Turndown.turndown(jsonObj[i].content);
-			const { title } = jsonObj[i];
-			// const time = replaceTime(`${jsonObj[i].publishedTime}`);
-			const time = formatDate(jsonObj[i].updated * 1000, "yyyy-MM-dd");
+		times(results.length, i => {
+			results[i].content = replaceContent(results[i].content);
+			results[i].content = replaceImage(results[i].content);
+			let content = Turndown.turndown(results[i].content);
+			const { title } = results[i];
+			const time = formatDate(results[i].updated * 1000, "yyyy-MM-dd");
 			const filename = `${time};${filenamify(title)}`;
 
-			const postUrl = jsonObj[i].url;
+			const postUrl = results[i].url;
 			const copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postUrl})\n\n\n`;
 			const header = `# ${title}\n\ndate: ${time} \n\n\n`;
 			ArrayObj.push({
@@ -85,13 +83,10 @@ const decode = res => {
 				content,
 				copyRight,
 				time: time,
-				json: res[i]
+				json: results[i]
 			});
-			if (jsonObj.length === ArrayObj.length) {
-				resolve({
-					MarkDown: ArrayObj,
-					json: res
-				});
+			if (results.length === ArrayObj.length) {
+				resolve(ArrayObj);
 			}
 		});
 	});

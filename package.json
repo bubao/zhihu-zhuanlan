@@ -6,8 +6,7 @@
 	"author": "bubao",
 	"license": "MIT",
 	"scripts": {
-		"posts": "node test/posts.js",
-		"zhuanlan": "node test/zhuanlan.js"
+		"test": "node test/zhuanlan.js"
 	},
 	"dependencies": {
 		"filenamify": "^2.1.0",

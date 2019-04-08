@@ -56,7 +56,7 @@ const writeFile = (path, filename, data, format) => {
 const run = async (path, postId) => {
 	mkdir(`${path}/${postId}`);
 	const arrJson = await zhuanlan(postId);
-	arrJson.MarkDown.forEach(element => {
+	arrJson.forEach(element => {
 		const { filename, header, content, copyRight, json } = element;
 		writeFile(
 			`${path}/${postId}/${filename}`,
