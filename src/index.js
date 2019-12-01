@@ -1,13 +1,13 @@
 /**
- * @author bubao 
+ * @author bubao
  * @description 专栏
  * @date: 2018-05-15 17:55:58
  * @Last Modified by: bubao
- * @Last Modified time: 2018-11-23 00:15:53
+ * @Last Modified time: 2019-04-09 02:01:47
  */
 
-const Posts = require('./Post/index.js');
-const decode = require('./tools/decode.js');
+const { Columns } = require("zhihu-api");
+const decode = require("./tools/decode.js");
 
 /**
  *  知乎专栏抓取器
@@ -15,7 +15,7 @@ const decode = require('./tools/decode.js');
  * @param {object} spinner ora实例
  */
 function Post(postID, spinner) {
-	return Posts(postID, spinner).then(decode);
-};
+	return Columns(postID, spinner).then(decode);
+}
 
 module.exports = Post;

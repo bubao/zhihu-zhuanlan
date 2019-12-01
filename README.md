@@ -21,37 +21,34 @@ cnpm i https://github.com/bubao/GetZhiHuZhuanLan.git --save
 `https://zhuanlan.zhihu.com/study-fe`的 `postID` 值是 `study-fe`：
 
 ```js
-import {zhuanlan, post } from './index';
-
-post('study-fe').then( res =>{
-    console.log(res);
-});
+import zhuanlan from 'zhihu-zhuanlan';
 
 zhuanlan('study-fe').then( res =>{
-    console.log(res);
+    console.log(res.MarkDown);
+    console.log(res.json);
 });
-
 ```
 
 ## API
 
-### post
+~~### post~~
 
-如果只想得到返回的内容，而不是经过MarkDown模块处理的数据。
+~~如果只想得到返回的内容，而不是经过MarkDown模块处理的数据。~~
 
 ```js
+// 迁移到bubao/zhihu-api
 post = (postID: string) => Promise<any>
 ```
 
-- `postID`:知乎专栏的专栏ID，例如`https://zhuanlan.zhihu.com/study-fe`的 `postID` 值是 `study-fe`
-
-### zhuanlan
+- ~~`postID`:知乎专栏的专栏ID，例如`https://zhuanlan.zhihu.com/study-fe`的 `postID` 值是 `study-fe`~~
 
 ```js
-zhuanlan = (postID: string) => Promise<void>
+const zhuanlan = require()
 ```
 
-- `postID`:知乎专栏的专栏ID，例如`https://zhuanlan.zhihu.com/study-fe`的 `postID` 值是 `study-fe`
+`postID`:知乎专栏的专栏ID，例如`https://zhuanlan.zhihu.com/study-fe`的 `postID` 值是 `study-fe`
+
+改方法
 
 ## 待改进
 
@@ -68,9 +65,11 @@ zhuanlan = (postID: string) => Promise<void>
 
 `filenamify`: 解决 windows 文件命名错误问题
 
-`cheerio`: 解析DOM
-
 ## History
+
+### 2019-4-9 2:29:32
+
+将模块迁移到知乎api，只剩下知乎专栏爬虫，添加完整的demo
 
 ### 2019-1-6 22:39:57
 
