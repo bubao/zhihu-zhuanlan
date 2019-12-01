@@ -3,30 +3,14 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2019-12-01 11:37:54
+ * @Last Modified time: 2019-12-01 13:51:37
  */
 const times = require("lodash/times");
 const compact = require("lodash/compact");
 const TurndownService = require("turndown");
 const filenamify = require("filenamify");
-const Turndown = new TurndownService();
-const formatDate = require("./formatDate");
 
-Turndown.addRule("indentedCodeBlock", {
-	filter(node, options) {
-		return (
-			options.codeBlockStyle === "indented" &&
-			node.nodeName === "PRE" &&
-			node.firstChild &&
-			node.firstChild.nodeName === "CODE"
-		);
-	},
-	replacement(content, node) {
-		return `'\n\`\`\`${node.firstChild.getAttribute(
-			"class"
-		)}\n${content}\n\`\`\`\n`;
-	}
-});
+const formatDate = require("./formatDate");
 
 /**
  * 转换内容，将部分不适合转换的标签改为合适转换的标签
@@ -64,6 +48,7 @@ const replaceImage = content => {
  */
 const decode = results => {
 	let ArrayObj = [];
+	const Turndown = Decoder.init()
 	return new Promise(resolve => {
 		times(results.length, i => {
 			results[i].content = replaceContent(results[i].content);
@@ -91,5 +76,34 @@ const decode = results => {
 		});
 	});
 };
+
+class Decoder {
+	constructor(){
+		this.instance = null
+	}
+	static init(){
+		let Turndown
+		if (!this.instance) {
+			Turndown = new TurndownService();
+			Turndown.addRule("indentedCodeBlock", {
+				filter(node, options) {
+					return (
+						options.codeBlockStyle === "indented" &&
+						node.nodeName === "PRE" &&
+						node.firstChild &&
+						node.firstChild.nodeName === "CODE"
+					);
+				},
+				replacement(content, node) {
+					return `'\n\`\`\`${node.firstChild.getAttribute(
+						"class"
+					).replace('language-','')}\n${content}\n\`\`\`\n`;
+				}
+			});
+			this.instance = Turndown
+		}
+		return this.instance
+	}
+}
 
 module.exports = decode;

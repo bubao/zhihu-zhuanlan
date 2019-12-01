@@ -1,10 +1,10 @@
-# 知乎专栏
+# 知乎专栏爬虫(zhihu-zhuanlan)
 
 > by: bubao
 >
 > Created: 2017 年 04 月 28 日 20:00:44
 >
-> Modified : 2019-1-6 22:42:48
+> Modified : 2019-12-1 14:20:40
 
 知乎是一个好地方，最近有空，想把知乎上的文章爬下来，放在本地有空慢慢看。项目模仿 [zhangolve 的项目](https://github.com/zhangolve/zhihu-answer-convert-to-md-by-node)。
 
@@ -23,47 +23,29 @@ cnpm i https://github.com/bubao/GetZhiHuZhuanLan.git --save
 ```js
 import zhuanlan from 'zhihu-zhuanlan';
 
-zhuanlan('study-fe').then( res =>{
-    console.log(res.MarkDown);
-    console.log(res.json);
+zhuanlan('study-fe').then(res => {
+    res.forEach(element => {
+        const { title, // 标题
+				filename, // 文件名，由title转为符合系统命名的文件名
+				header, // 文章头信息
+				content, // 文章内容
+				copyRight, // 版权声明
+				time, // 文章创建时间
+                json // 文章的源信息
+            } = element;
+    })
 });
 ```
-
-## API
-
-~~### post~~
-
-~~如果只想得到返回的内容，而不是经过MarkDown模块处理的数据。~~
-
-```js
-// 迁移到bubao/zhihu-api
-post = (postID: string) => Promise<any>
-```
-
-- ~~`postID`:知乎专栏的专栏ID，例如`https://zhuanlan.zhihu.com/study-fe`的 `postID` 值是 `study-fe`~~
-
-```js
-const zhuanlan = require()
-```
-
-`postID`:知乎专栏的专栏ID，例如`https://zhuanlan.zhihu.com/study-fe`的 `postID` 值是 `study-fe`
-
-改方法
-
-## 待改进
-
-- ~~`code` 标签转 MD 有点缺陷~~
-- ~~windows文件命名~~
 
 ## 使用的模块
 
 `lodash`：最好用的工具
 
-`self-promise-request`：用于请求网络
-
 `turndown`：用于将HTML转成Markdown
 
 `filenamify`: 解决 windows 文件命名错误问题
+
+[`zhihu-api`](https://github.com/bubao/zhihu-api): 自己封装和维护的知乎api模块
 
 ## History
 

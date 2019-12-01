@@ -9,11 +9,9 @@
 		"test": "node test/zhuanlan.js"
 	},
 	"dependencies": {
-		"filenamify": "^2.1.0",
-		"lodash": "^4.17.10",
-		"mkdirp": "^0.5.1",
-		"self-promise-request": "git+https://github.com/bubao/self-promise-request.git#v0.0.1",
-		"turndown": "^4.0.2",
-		"zhihu-api": "git+https://github.com/bubao/zhihu-api.git"
+		"filenamify": "^4.1.0",
+		"lodash": "^4.17.15",
+		"turndown": "^5.0.3",
+		"zhihu-api": "git+https://github.com/bubao/zhihu-api.git#v0.0.2"
 	}
 }
