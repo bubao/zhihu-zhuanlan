@@ -3,7 +3,7 @@
  * @description 专栏
  * @date: 2018-05-15 17:55:58
  * @Last Modified by: bubao
- * @Last Modified time: 2019-12-02 03:21:15
+ * @Last Modified time: 2019-12-02 03:25:13
  */
 
 const { Columns } = require("zhihu-api");
@@ -28,7 +28,7 @@ class Post extends EventEmitter{
 
 	async getAll(columnsID) {
 		columnsID = columnsID ||this.columnsID
-		if (!this.columnsID) {
+		if (!columnsID) {
 			this.emit('error', 'columnsID of undefined');
 			return ;
 		}
