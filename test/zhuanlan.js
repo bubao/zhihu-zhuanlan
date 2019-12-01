@@ -1,4 +1,4 @@
-const zhuanlan = require("..");
+const Zhuanlan = require("..");
 const fs = require("fs");
 
 const MAX_SAFE_INTEGER = 9007199254740991;
@@ -53,24 +53,29 @@ const writeFile = (path, filename, data, format) => {
 		);
 	});
 };
-const run = async (path, postId) => {
-	mkdir(`${path}/${postId}`);
-	const arrJson = await zhuanlan(postId);
-	arrJson.forEach(element => {
+const run = async (path, columnsID) => {
+	const zhihu = Zhuanlan.init({columnsID})
+	let title
+	zhihu.once('info',(data)=>{
+		title = data.title
+		mkdir(`${path}/${data.title}`);
+	})
+	zhihu.on('single_data',(element)=>{
 		const { filename, header, content, copyRight, json } = element;
 		writeFile(
-			`${path}/${postId}/${filename}`,
+			`${path}/${title}/${filename}`,
 			filename,
 			header + content + copyRight,
 			"md"
 		);
 		writeFile(
-			`${path}/${postId}/${filename}`,
+			`${path}/${title}/${filename}`,
 			filename,
 			JSON.stringify(json),
 			"json"
 		);
-	});
+	})
+	zhihu.getAll()
 };
 
 run("./", "YJango");

@@ -12,6 +12,6 @@
 		"filenamify": "^4.1.0",
 		"lodash": "^4.17.15",
 		"turndown": "^5.0.3",
-		"zhihu-api": "git+https://github.com/bubao/zhihu-api.git#v0.0.2"
+		"zhihu-api": "git+https://github.com/bubao/zhihu-api.git#v0.1.0"
 	}
 }

@@ -3,7 +3,7 @@
  * @description html内容转markdown
  * @date: 2018-05-15 17:56:12
  * @Last Modified by: bubao
- * @Last Modified time: 2019-12-01 13:51:37
+ * @Last Modified time: 2019-12-02 01:19:03
  */
 const times = require("lodash/times");
 const compact = require("lodash/compact");
@@ -49,32 +49,26 @@ const replaceImage = content => {
 const decode = results => {
 	let ArrayObj = [];
 	const Turndown = Decoder.init()
-	return new Promise(resolve => {
-		times(results.length, i => {
-			results[i].content = replaceContent(results[i].content);
-			results[i].content = replaceImage(results[i].content);
-			let content = Turndown.turndown(results[i].content);
-			const { title } = results[i];
-			const time = formatDate(results[i].updated * 1000, "yyyy-MM-dd");
-			const filename = `${time};${filenamify(title)}`;
+	results.content = replaceContent(results.content);
+	results.content = replaceImage(results.content);
+	let content = Turndown.turndown(results.content);
+	const { title } = results;
+	const time = formatDate(results.updated * 1000, "yyyy-MM-dd");
+	const filename = `${time};${filenamify(title)}`;
+	// console.log(filename)
 
-			const postUrl = results[i].url;
-			const copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postUrl})\n\n\n`;
-			const header = `# ${title}\n\ndate: ${time} \n\n\n`;
-			ArrayObj.push({
-				title,
-				filename,
-				header,
-				content,
-				copyRight,
-				time: time,
-				json: results[i]
-			});
-			if (results.length === ArrayObj.length) {
-				resolve(ArrayObj);
-			}
-		});
-	});
+	const postUrl = results.url;
+	const copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postUrl})\n\n\n`;
+	const header = `# ${title}\n\ndate: ${time} \n\n\n`;
+	return {
+		title,
+		filename,
+		header,
+		content,
+		copyRight,
+		time: time,
+		json: results
+	}
 };
 
 class Decoder {
