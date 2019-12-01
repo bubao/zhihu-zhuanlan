@@ -3,7 +3,7 @@
  * @description 专栏
  * @date: 2018-05-15 17:55:58
  * @Last Modified by: bubao
- * @Last Modified time: 2019-12-02 02:07:07
+ * @Last Modified time: 2019-12-02 03:17:40
  */
 
 const { Columns } = require("zhihu-api");
@@ -13,7 +13,7 @@ const EventEmitter = require('events')
 class Post extends EventEmitter{
 	constructor(props) {
 		super();
-		this.columnsID = props.columnsID || this.columnsID
+		this.columnsID = props ? props.columnsID : this.columnsID
 		this.next = props.offset / 20 || this.next || 0
 		this.instance = null
 		this.get = this.getAll.bind(this)
