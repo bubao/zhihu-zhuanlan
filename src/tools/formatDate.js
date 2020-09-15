@@ -1,3 +1,10 @@
+/**
+ * @description:
+ * @author: bubao
+ * @Date: 2020-07-08 01:19:44
+ * @LastEditors: bubao
+ * @LastEditTime: 2020-09-15 16:55:50
+ */
 function formatDate(date, fmt) {
 	date = new Date(date);
 	if (/(y+)/.test(fmt)) {
@@ -6,7 +13,7 @@ function formatDate(date, fmt) {
 			(date.getFullYear() + "").substr(4 - RegExp.$1.length)
 		);
 	}
-	let o = {
+	const o = {
 		"M+": date.getMonth() + 1,
 		"d+": date.getDate(),
 		"h+": date.getHours(),
@@ -15,9 +22,9 @@ function formatDate(date, fmt) {
 	};
 
 	// 遍历这个对象
-	for (let k in o) {
+	for (const k in o) {
 		if (new RegExp(`(${k})`).test(fmt)) {
-			let str = o[k] + "";
+			const str = o[k] + "";
 			fmt = fmt.replace(
 				RegExp.$1,
 				RegExp.$1.length === 1 ? str : padLeftZero(str)

@@ -1,10 +1,11 @@
 /**
- * @author bubao
- * @description html内容转markdown
- * @date: 2018-05-15 17:56:12
- * @Last Modified by: bubao
- * @Last Modified time: 2019-12-02 01:19:03
+ * @description: html内容转markdown
+ * @author: bubao
+ * @Date: 2018-05-15 17:56:12
+ * @LastEditors: bubao
+ * @LastEditTime: 2020-09-15 16:56:23
  */
+
 const times = require("lodash/times");
 const compact = require("lodash/compact");
 const TurndownService = require("turndown");
@@ -19,7 +20,7 @@ const formatDate = require("./formatDate");
 const replaceContent = content => {
 	return content
 		.replace(/<br>/g, "\n")
-		.replace(/<code lang="/g, '<pre><code class="language-')
+		.replace(/<code lang="/g, "<pre><code class=\"language-")
 		.replace(/\n<\/code>/g, "\n</code></pre>");
 };
 
@@ -47,11 +48,10 @@ const replaceImage = content => {
  * @param {string} res 数据
  */
 const decode = results => {
-	let ArrayObj = [];
-	const Turndown = Decoder.init()
+	const Turndown = Decoder.init();
 	results.content = replaceContent(results.content);
 	results.content = replaceImage(results.content);
-	let content = Turndown.turndown(results.content);
+	const content = Turndown.turndown(results.content);
 	const { title } = results;
 	const time = formatDate(results.updated * 1000, "yyyy-MM-dd");
 	const filename = `${time};${filenamify(title)}`;
@@ -68,15 +68,16 @@ const decode = results => {
 		copyRight,
 		time: time,
 		json: results
-	}
+	};
 };
 
 class Decoder {
-	constructor(){
-		this.instance = null
+	constructor() {
+		this.instance = null;
 	}
-	static init(){
-		let Turndown
+
+	static init() {
+		let Turndown;
 		if (!this.instance) {
 			Turndown = new TurndownService();
 			Turndown.addRule("indentedCodeBlock", {
@@ -91,12 +92,12 @@ class Decoder {
 				replacement(content, node) {
 					return `'\n\`\`\`${node.firstChild.getAttribute(
 						"class"
-					).replace('language-','')}\n${content}\n\`\`\`\n`;
+					).replace("language-", "")}\n${content}\n\`\`\`\n`;
 				}
 			});
-			this.instance = Turndown
+			this.instance = Turndown;
 		}
-		return this.instance
+		return this.instance;
 	}
 }
 
