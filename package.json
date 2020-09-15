@@ -1,17 +1,61 @@
 {
-	"name": "zhihu-zhuanlan",
-	"version": "0.0.5",
-	"description": "知乎专栏爬虫",
-	"main": "index.js",
-	"author": "bubao",
-	"license": "MIT",
-	"scripts": {
-		"test": "node test/zhuanlan.js"
-	},
-	"dependencies": {
-		"filenamify": "^4.1.0",
-		"lodash": "^4.17.15",
-		"turndown": "^5.0.3",
-		"zhihu-api": "git+https://github.com/bubao/zhihu-api.git#v0.1.0"
-	}
+  "name": "zhihu-zhuanlan",
+  "version": "0.0.5",
+  "description": "知乎专栏爬虫",
+  "main": "index.js",
+  "author": "bubao",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint . --ext .js --fix",
+    "test": "node test/zhuanlan.js"
+  },
+  "dependencies": {
+    "filenamify": "^4.1.0",
+    "lodash": "^4.17.20",
+    "turndown": "^5.0.3",
+    "zhihu-api": "git+https://github.com/bubao/zhihu-api.git#v0.1.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "echo 'husky' && npm run lint",
+      "pre-push": "echo 'husky' && npm run lint",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "config/cz-config.js"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "commitizen": "^4.2.1",
+    "cz-customizable": "^6.3.0",
+    "eslint": "^7.9.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^4.3.0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bubao/zhihu-zhuanlan.git"
+  },
+  "keywords": [
+    "zhihu",
+    "zhuanlan"
+  ],
+  "bugs": {
+    "url": "https://github.com/bubao/zhihu-zhuanlan/issues"
+  },
+  "homepage": "https://github.com/bubao/zhihu-zhuanlan#readme"
 }
