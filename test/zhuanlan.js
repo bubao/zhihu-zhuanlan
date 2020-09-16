@@ -3,7 +3,7 @@
  * @author: bubao
  * @Date: 2020-07-08 01:19:44
  * @LastEditors: bubao
- * @LastEditTime: 2020-09-15 18:29:28
+ * @LastEditTime: 2020-09-16 17:08:47
  */
 const Zhuanlan = require("..");
 const fs = require("fs");
@@ -45,31 +45,29 @@ const mkdir = async (...filePath) => {
 	});
 };
 
-const writeFile = (path, filename, data, format) => {
+const writeFile = (path, data, format) => {
 	fs.writeFile(`${path}.${format}`, data, "utf8", err => {
 		if (err) throw err;
 	});
 };
 const run = (path, columnsID) => {
 	const zhihu = Zhuanlan.init({ columnsID });
-	let title;
+	let dir;
 	zhihu.once("info", (data) => {
-		title = data.title;
+		dir = data.title;
 		mkdir(`${path}/${data.title}`);
 	});
 	let write_count = 0;
 	zhihu.on("batch_data", (element) => {
 		// console.log((element.now_count / element.articles_count * 100).toFixed(2) + "%");
-		element.data.map(({ filename, header, content, copyRight, json }) => {
+		element.data.map(({ filenameTime, header, content, copyRight, json }) => {
 			writeFile(
-				`${path}/${title}/${filename}`,
-				filename,
+				`${path}/${dir}/${filenameTime}`,
 				header + content + copyRight,
 				"md"
 			);
 			writeFile(
-				`${path}/${title}/${filename}`,
-				filename,
+				`${path}/${dir}/${filenameTime}`,
 				JSON.stringify(json),
 				"json"
 			);

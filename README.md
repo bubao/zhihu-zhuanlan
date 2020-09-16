@@ -1,4 +1,4 @@
-# 知乎专栏爬虫(zhihu-zhuanlan)
+# 知乎专栏爬虫 (zhihu-zhuanlan)
 
 > by: bubao
 >
@@ -23,90 +23,75 @@ cnpm i https://github.com/bubao/GetZhiHuZhuanLan.git --save
 ```js
 const Zhuanlan = require("..");
 const fs = require("fs");
-
+const util = require("util");
+const FsStat = util.promisify(fs.stat);
 const MAX_SAFE_INTEGER = 9007199254740991;
 
 function isLength(value) {
-	return (
-		typeof value == "number" &&
-		value > -1 &&
-		value % 1 == 0 &&
-		value <= MAX_SAFE_INTEGER
-	);
+    return (
+        typeof value === "number" &&
+        value > -1 &&
+        value % 1 === 0 &&
+        value <= MAX_SAFE_INTEGER
+    );
 }
 
 function isArrayLike(value) {
-	return (
-		value != null && typeof value != "function" && isLength(value.length)
-	);
+    return (
+        value != null && typeof value !== "function" && isLength(value.length)
+    );
 }
 
-const mkdir = (...filePath) => {
-	if (isArrayLike(filePath)) {
-		filePath = require("path").resolve(...filePath);
-	}
-	return new Promise((resolve, reject) => {
-		const isExists = fs.existsSync(`${filePath}`);
-		if (isExists) {
-			console.log(
-				`⚓  ${require("path").basename(filePath)} 文件夹已经存在`
-			);
-		} else {
-			fs.mkdir(`${filePath}`, error => {
-				if (error) {
-					reject(error);
-				} else {
-					console.log(
-						`🤖 创建 ${require("path").basename(
-							filePath
-						)}文件夹成功`
-					);
-					resolve();
-				}
-			});
-		}
-	});
+const mkdir = async (...filePath) => {
+    if (isArrayLike(filePath)) {
+        filePath = require("path").resolve(...filePath);
+    }
+    await FsStat(`${filePath}`).then(() => {
+        console.log(
+            `⚓  ${require("path").basename(filePath)} 文件夹已经存在`
+        );
+    }).catch(() => {
+        fs.mkdir(`${filePath}`, () => {
+            console.log(
+                `🤖 创建 ${require("path").basename(
+                    filePath
+                )}文件夹成功`
+            );
+        });
+    });
 };
 
-const writeFile = (path, filename, data, format) => {
-	fs.writeFile(`${path}.${format}`, data, "utf8", err => {
-		if (err) throw err;
-		console.log(
-			`${format === "json" ? "🍅" : "✅"}  ${filename}.${format}`
-		);
-	});
+const writeFile = (path, data, format) => {
+    fs.writeFile(`${path}.${format}`, data, "utf8", err => {
+        if (err) throw err;
+    });
 };
-const run = async (path, columnsID) => {
-	const zhihu = Zhuanlan.init({columnsID})
-	let title
-	zhihu.once('info',(data)=>{
-		title = data.title; // 专栏名
-		mkdir(`${path}/${data.title}`);
-    })
-    // 监听获取一篇文章数据
-	zhihu.on('single_data',(element)=>{
-		const { title, // 标题
-				filename, // 文件名，由title转为符合系统命名的文件名
-				header, // 文章头信息
-				content, // 文章内容
-				copyRight, // 版权声明
-				time, // 文章创建时间
-                json // 文章的源信息 
-            } = element;
-		writeFile(
-			`${path}/${title}/${filename}`,
-			filename,
-			header + content + copyRight,
-			"md"
-		);
-		writeFile(
-			`${path}/${title}/${filename}`,
-			filename,
-			JSON.stringify(json),
-			"json"
-		);
-	})
-	zhihu.getAll() // 获取专栏
+const run = (path, columnsID) => {
+    const zhihu = Zhuanlan.init({ columnsID });
+    let dir;
+    zhihu.once("info", (data) => {
+        dir = data.title;
+        mkdir(`${path}/${data.title}`);
+    });
+    let write_count = 0;
+    zhihu.on("batch_data", (element) => {
+        // console.log((element.now_count / element.articles_count * 100).toFixed(2) + "%");
+        element.data.map(({ filenameTime, header, content, copyRight, json }) => {
+            writeFile(
+                `${path}/${dir}/${filenameTime}`,
+                header + content + copyRight,
+                "md"
+            );
+            writeFile(
+                `${path}/${dir}/${filenameTime}`,
+                JSON.stringify(json),
+                "json"
+            );
+            write_count++;
+            console.log((write_count / element.articles_count * 100).toFixed(2) + "%");
+        });
+    });
+    zhihu.getAll();
 };
 
 run("./", "YJango");
@@ -116,25 +101,31 @@ run("./", "YJango");
 
 `lodash`：最好用的工具
 
-`turndown`：用于将HTML转成Markdown
+`turndown`：用于将 HTML 转成 Markdown
 
 `filenamify`: 解决 windows 文件命名错误问题
 
-[`zhihu-api`](https://github.com/bubao/zhihu-api): 自己封装和维护的知乎api模块
+[`zhihu-api`](https://github.com/bubao/zhihu-api): 自己封装和维护的知乎 api 模块
 
 ## History
 
+## 2020-09-16 17:12:30
+
+- 使用 [zhihu-api v0.1.1](https://github.com/bubao/zhihu-api/tree/v0.1.1)
+- 事件监听改为`batch_data`
+- 原先的`filename`改为`filenameTime`，`filenameTime`为时间+文件名，原先的`filename`只是文件名
+
 ### 2019-12-2 2:13:09
 
-使用[zhihu-api v0.1.0](https://github.com/bubao/zhihu-api/tree/v0.1.0)，事件监听的方式获取专栏数据
+使用 [zhihu-api v0.1.0](https://github.com/bubao/zhihu-api/tree/v0.1.0)，事件监听的方式获取专栏数据
 
 ### 2019-4-9 2:29:32
 
-将模块迁移到知乎api，只剩下知乎专栏爬虫，添加完整的demo
+将模块迁移到知乎 api，只剩下知乎专栏爬虫，添加完整的 demo
 
 ### 2019-1-6 22:39:57
 
-知乎API更新，重写部分代码。
+知乎 API 更新，重写部分代码。
 
 ### 2018-11-22 22:21:40
 
@@ -146,4 +137,4 @@ run("./", "YJango");
 
 ### 2018-5-15 18:21:05
 
-如今因为知乎api和知乎专栏的网页布局有所改变，现在重写了这个爬虫，api模块使用的是[zhihu](https://www.npmjs.com/package/zhihu)的重构代码，模块中的request模块再次二次封装。
+如今因为知乎 api 和知乎专栏的网页布局有所改变，现在重写了这个爬虫，api 模块使用的是 [zhihu](https://www.npmjs.com/package/zhihu) 的重构代码，模块中的 request 模块再次二次封装。

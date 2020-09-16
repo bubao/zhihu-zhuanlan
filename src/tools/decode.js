@@ -3,7 +3,7 @@
  * @author: bubao
  * @Date: 2018-05-15 17:56:12
  * @LastEditors: bubao
- * @LastEditTime: 2020-09-15 16:56:23
+ * @LastEditTime: 2020-09-16 16:56:59
  */
 
 const times = require("lodash/times");
@@ -25,8 +25,9 @@ const replaceContent = content => {
 };
 
 /**
- * 转换内容，连接转换为绝对连接
+ * 转换内容，链接转换为绝对链接
  * @param {string} content 知乎专栏的Markdown内容
+ * @returns {string} content
  */
 const replaceImage = content => {
 	const reg = /<figure><noscript>.*?<\/noscript>.*?<\/figure>/g;
@@ -45,29 +46,39 @@ const replaceImage = content => {
 
 /**
  * decode
- * @param {string} res 数据
+ * @param {string} results 数据
+ * @returns {{
+		title:string,
+		filenameTime:string,
+		filename:string,
+		header:string,
+		content:string,
+		copyRight:string,
+		time: string,
+		json: results
+	}}
  */
 const decode = results => {
 	const Turndown = Decoder.init();
-	results.content = replaceContent(results.content);
-	results.content = replaceImage(results.content);
-	const content = Turndown.turndown(results.content);
+	const content = Turndown.turndown(replaceContent(replaceImage(results.content)));
 	const { title } = results;
 	const time = formatDate(results.updated * 1000, "yyyy-MM-dd");
-	const filename = `${time};${filenamify(title)}`;
-	// console.log(filename)
+	const filename = filenamify(title);
+	const filenameTime = `${time};${filename}`;
 
 	const postUrl = results.url;
 	const copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postUrl})\n\n\n`;
 	const header = `# ${title}\n\ndate: ${time} \n\n\n`;
+
 	return {
-		title,
-		filename,
-		header,
-		content,
-		copyRight,
-		time: time,
-		json: results
+		title, // 标题
+		filenameTime, // 带时间的文件名
+		filename, // 文件名，由title转为符合系统命名的文件名
+		header, // 文章头信息
+		content, // 文章内容
+		copyRight, // 版权声明
+		time: time, // 文章创建时间
+		json: results // 文章的源信息
 	};
 };
 
