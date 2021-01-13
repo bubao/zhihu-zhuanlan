@@ -1,6 +1,6 @@
 {
   "name": "zhihu-zhuanlan",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "知乎专栏爬虫",
   "main": "index.js",
   "author": "bubao",
