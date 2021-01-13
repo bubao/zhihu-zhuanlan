@@ -2,14 +2,14 @@
  * @description: 专栏
  * @author: bubao
  * @Date: 2018-05-15 17:55:58
- * @LastEditors: bubao
- * @LastEditTime: 2020-09-15 18:29:19
+ * @last author: bubao
+ * @last edit time: 2021-01-13 20:41:51
  */
 
 const { Post } = require("zhihu-api");
 const Articles = Post.Articles;
 const decode = require("./tools/decode.js");
-const EventEmitter = require("events");
+const EventEmitter = require("events").EventEmitter;
 
 class App extends EventEmitter {
 	constructor(props) {
@@ -24,6 +24,43 @@ class App extends EventEmitter {
 			this.instance = new this(props);
 		}
 		return this.instance;
+	}
+
+	/**
+	 * @description 监听Info
+	 * @author bubao
+	 * @date 2021-01-13
+	 * @param {function} [cb=() => {}]
+	 * @memberof App
+	 */
+	onInfo(cb = () => {}) {
+		this.once("info", cb);
+	}
+
+	/**
+	 * @description 监听完成
+	 * @author bubao
+	 * @date 2021-01-13
+	 * @param {function} [cb=() => {}]
+	 * @memberof App
+	 */
+	onDone(cb = () => {}) {
+		this.once("done", () => {
+			this.removeListener("info", () => {});
+			this.removeListener("batch_data", () => {});
+			cb();
+		});
+	}
+
+	/**
+	 * @description 监听数据
+	 * @author bubao
+	 * @date 2021-01-13
+	 * @param {function} [cb=() => {}]
+	 * @memberof App
+	 */
+	onData(cb = (data) => data) {
+		this.on("batch_data", cb);
 	}
 
 	async getAll(columnsID) {

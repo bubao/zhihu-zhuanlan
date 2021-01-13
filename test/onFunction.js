@@ -1,9 +1,9 @@
 /**
- * @description: 使用事件
+ * @description: 使用监听函数
  * @author: bubao
- * @Date: 2020-07-08 01:19:44
+ * @date: 2021-01-13 20:10:14
  * @last author: bubao
- * @last edit time: 2021-01-13 20:44:48
+ * @last edit time: 2021-01-13 20:44:29
  */
 const Zhuanlan = require("..");
 const fs = require("fs");
@@ -50,16 +50,18 @@ const writeFile = (path, data, format) => {
 		if (err) throw err;
 	});
 };
-const run = (path, columnsID) => {
-	const zhihu = Zhuanlan.init({ columnsID });
+const run = async (path, columnsID) => {
+	const zhihu = new Zhuanlan({ columnsID });
+
+	zhihu.on("error", console.error);
 	let dir;
-	zhihu.once("info", (data) => {
+	zhihu.onInfo((data) => {
 		dir = data.title;
 		mkdir(`${path}/${data.title}`);
 	});
+	zhihu.onDone();
 	let write_count = 0;
-	zhihu.on("batch_data", (element) => {
-		// console.log((element.now_count / element.articles_count * 100).toFixed(2) + "%");
+	zhihu.onData((element) => {
 		element.data.map(({ filenameTime, header, content, copyRight, json }) => {
 			writeFile(
 				`${path}/${dir}/${filenameTime}`,

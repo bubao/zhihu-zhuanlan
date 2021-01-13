@@ -97,6 +97,16 @@ const run = (path, columnsID) => {
 run("./", "YJango");
 ```
 
+### 事件&&方法
+
+本模块自定义的事件，都有对应的方法。
+
+|事件名|方法名|作用|
+|---|---|---|
+| info | onInfo | 获取专栏信息 |
+| batch_data |onData| 获取专栏数据，接受一个回调函数 |
+| done|onDone| 监听完成事件|
+
 ## 使用的模块
 
 `lodash`：最好用的工具
