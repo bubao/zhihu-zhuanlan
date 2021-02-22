@@ -2,8 +2,8 @@
  * @description: html内容转markdown
  * @author: bubao
  * @Date: 2018-05-15 17:56:12
- * @LastEditors: bubao
- * @LastEditTime: 2020-09-16 16:56:59
+ * @last author: bubao
+ * @last edit time: 2021-02-23 03:09:40
  */
 
 const times = require("lodash/times");
@@ -67,7 +67,7 @@ const decode = results => {
 	const filenameTime = `${time};${filename}`;
 
 	const postUrl = results.url;
-	const copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postUrl})\n\n\n`;
+	const copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postUrl.replace("https://zhuanlan.zhihu.com", "")})\n\n\n`;
 	const header = `# ${title}\n\ndate: ${time} \n\n\n`;
 
 	return {
