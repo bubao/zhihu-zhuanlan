@@ -1,6 +1,6 @@
 {
   "name": "zhihu-zhuanlan",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "知乎专栏爬虫",
   "main": "index.js",
   "author": "bubao",
@@ -13,7 +13,7 @@
     "filenamify": "^4.1.0",
     "lodash": "^4.17.20",
     "turndown": "^5.0.3",
-    "zhihu-api": "git+https://github.com/bubao/zhihu-api.git#v0.1.1"
+    "zhihu-api": "git+https://github.com/bubao/zhihu-api.git#v0.2.1"
   },
   "husky": {
     "hooks": {

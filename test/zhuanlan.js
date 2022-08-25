@@ -5,7 +5,7 @@
  * @last author: bubao
  * @last edit time: 2021-01-13 20:44:48
  */
-const Zhuanlan = require("..");
+const { v4: Zhuanlan } = require("..");
 const fs = require("fs");
 const util = require("util");
 const FsStat = util.promisify(fs.stat);
@@ -72,7 +72,7 @@ const run = (path, columnsID) => {
 				"json"
 			);
 			write_count++;
-			console.log((write_count / element.articles_count * 100).toFixed(2) + "%");
+			console.log((write_count / element.items_count * 100).toFixed(2) + "%");
 		});
 	});
 	zhihu.getAll();
