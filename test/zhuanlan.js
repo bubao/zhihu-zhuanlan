@@ -78,4 +78,4 @@ const run = (path, columnsID) => {
 	zhihu.getAll();
 };
 
-run("./", "YJango");
+run("./", "c_1315349725177552896");

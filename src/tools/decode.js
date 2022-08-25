@@ -61,14 +61,40 @@ const replaceImage = content => {
 const decode = results => {
 	const Turndown = Decoder.init();
 	const content = Turndown.turndown(replaceContent(replaceImage(results.content)));
-	const { title } = results;
-	const time = formatDate(results.updated * 1000, "yyyy-MM-dd");
-	const filename = filenamify(title);
-	const filenameTime = `${time};${filename}`;
+	// const { title } = results;
+	let title = "";
+	let time = "";
+	let filename = "";
+	let filenameTime = "";
+	let copyRight = "";
+	let postUrl = "";
+	let header = "";
+	switch (results.type) {
+	case "article":
+		title = results.title;
 
-	const postUrl = results.url;
-	const copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postUrl.replace("https://zhuanlan.zhihu.com", "")})\n\n\n`;
-	const header = `# ${title}\n\ndate: ${time} \n\n\n`;
+		time = formatDate(results.updated * 1000, "yyyy-MM-dd");
+		filename = filenamify(title);
+		filenameTime = `${time};${filename}`;
+
+		postUrl = results.url;
+		copyRight = `\n\n知乎原文: [${title}](https://zhuanlan.zhihu.com${postUrl.replace("https://zhuanlan.zhihu.com", "")})\n\n\n`;
+		header = `# ${title}\n\ndate: ${time} \n\n\n`;
+		break;
+	case "answer":
+		title = results.question.title;
+		time = formatDate(results.created_time * 1000, "yyyy-MM-dd");
+		filename = filenamify(title);
+		filenameTime = `${time};${filename}`;
+
+		postUrl = `https://www.zhihu.com/question/${results.question.id}/answer/${results.id}`;
+		copyRight = `\n\n知乎原文: [${title}](${postUrl})\n\n\n`;
+		header = `# ${title}\n\ndate: ${time} \n\n\n`;
+		break;
+	default:
+		throw (new Error("unknown type"));
+	}
+	console.log(title);
 
 	return {
 		title, // 标题
